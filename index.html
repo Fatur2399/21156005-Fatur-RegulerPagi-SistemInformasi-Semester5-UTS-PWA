@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Portofolio Fatkhurrohman</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="images/hello-icon-152.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="white" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="Hello World" />
+    <meta name="msapplication-TileImage" content="images/hello-icon-144.png" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+        padding: 1rem 0;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        border-radius: 50%;
+      }
+
+      h1 {
+        margin-top: 1rem;
+        font-size: 2rem;
+      }
+
+      h2 {
+        margin-top: 1.5rem;
+        font-size: 1.5rem;
+      }
+
+      form {
+        margin-top: 1rem;
+      }
+
+      label {
+        font-weight: bold;
+      }
+
+      textarea {
+        width: 100%;
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        font-size: 1rem;
+      }
+
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <!-- ... (bagian head dan elemen-elemen lainnya) ... -->
+
+<script>
+  var db;
+  var request = indexedDB.open("KomentarDB", 1);
+
+  request.onupgradeneeded = function(event) {
+    db = event.target.result;
+    var objectStore = db.createObjectStore("komentar", { keyPath: "id", autoIncrement: true });
+    objectStore.createIndex("komentar", "komentar", { unique: false });
+  };
+
+  request.onsuccess = function(event) {
+    db = event.target.result;
+  };
+
+  request.onerror = function(event) {
+    console.log("Error saat membuka database: " + event.target.errorCode);
+  };
+
+  function simpanKomentar() {
+    var komentarText = document.getElementById("komentar").value;
+
+    var transaction = db.transaction(["komentar"], "readwrite");
+    var objectStore = transaction.objectStore("komentar");
+    var komentar = {
+      komentar: komentarText
+    };
+
+    var request = objectStore.add(komentar);
+
+    request.onsuccess = function(event) {
+      console.log("Komentar berhasil disimpan dalam database");
+    };
+
+    request.onerror = function(event) {
+      console.log("Error saat menyimpan komentar: " + event.target.errorCode);
+    };
+  }
+</script>
+<script src="js/main.js"></script>
+</body>
+</html>
+
+  <body>
+    <header>
+      <h1>Portofolio Fatkhurrohman</h1>
+    </header>
+    <div class="container">
+      <img src="/images/Fotoku.jpg" alt="Foto Diri" />
+      <div><strong>Nama:</strong> Fatkhurrohman</div>
+      <div><strong>NIM:</strong> 21156005</div>
+      <div><strong>Kelas:</strong> Reguler Pagi</div>
+      <div><strong>Semester:</strong> 5</div>
+      <div><strong>Mata Kuliah:</strong> Progressive Web App</div>
+      <div>
+        <strong>Tujuan Belajar Mobile Programming PWA:</strong> Mempelajari
+        konsep dan teknologi Progressive Web App (PWA) untuk mengembangkan
+        aplikasi web yang dapat berjalan offline dan memiliki pengalaman
+        pengguna mirip aplikasi native.
+      </div>
+
+      <h2>Komentar:</h2>
+      <form id="komentarForm">
+        <label for="komentar">Komentar:</label>
+        <textarea id="komentar" name="komentar" rows="4" cols="50"></textarea>
+        <br />
+        <button type="button" onclick="simpanKomentar()">
+          Simpan Komentar
+        </button>
+      </form>
+    </div>
+
+    <script>
+      // Minta izin notifikasi
+      if ("Notification" in window) {
+        Notification.requestPermission().then(function (permission) {
+          if (permission === "granted") {
+            showNotification(
+              "Selamat datang!",
+              "Terima kasih telah menggunakan PWA ini."
+            );
+            alert("Terima kasih sudah accept");
+          } else if (permission === "denied") {
+            // Izin diblokir
+            alert("Yahah kasihan diblokir");
+          }
+        });
+      }
+
+      // Fungsi untuk menampilkan notifikasi
+      function showNotification(title, message) {
+        if ("Notification" in window && Notification.permission === "granted") {
+          navigator.serviceWorker.ready.then(function (registration) {
+            registration.showNotification(title, {
+              body: message,
+            });
+          });
+        }
+      }
+
+      function simpanKomentar() {
+        var komentar = document.getElementById("komentar").value;
+        // Simpan komentar ke IndexedDB atau database lainnya di sini
+        console.log("Komentar disimpan: " + komentar);
+      }
+    </script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

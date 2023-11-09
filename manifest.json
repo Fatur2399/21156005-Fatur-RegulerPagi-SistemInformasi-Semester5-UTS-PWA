@@ -1,0 +1,22 @@
+{
+  "name": "Hello World",
+  "short_name": "Hello",
+  "icons": [
+    {
+      "src": "images/hello-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "images/Fotoku.jpg",
+      "sizes": "512x512",
+      "type": "image/jpg"
+    }
+  ],
+  "lang": "en-US",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "white",
+  "theme_color": "white",
+  "permissions": ["notifications"]
+}
